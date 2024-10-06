@@ -1,27 +1,21 @@
+def stock_picker(arr)
+    # Find what the best difference between buying and selling is (sell - buy)
+    # Start looking for sell day that is later than the buy day
 
+    highest_profit = 0
+    best_days = []
 
-def stock_picker(array)
-
-    bestbuy = 0
-    bestsell = 0
-    max_profit = 0
-
-    array.each_with_index do |buy_price, buy_day|
-        (buy_day + 1...array.length).each do |sell_day|
-            sell_price = array[sell_day]
-            profit = sell_price - buy_price
-
-            if profit > max_profit
-                max_profit = profit
-                bestbuy = buy_day
-                bestsell = sell_day
+    arr.each_with_index do |buy_value, buy_index|
+        next_day = buy_index + 1
+        arr[next_day..-1].each_with_index do |sell_value, sell_index|
+            if sell_value - buy_value > highest_profit
+                highest_profit = sell_value - buy_value
+                # We must add buy_index + 1 because current array we're looping through has the buy_index + 1 cut off.
+                best_days = [buy_index, sell_index + buy_index + 1]
             end
         end
     end
-
-    [bestbuy, bestsell]
-
+    best_days
 end
 
-
-p stock_picker([17,3,6,9,15,8,6,1,10])
+p stock_picker([1,3,6,9,15,8,6,1,30])
